@@ -1,0 +1,168 @@
+/*
+ * Copyright (c) 2022 Marcin Niestroj
+ * Copyright (c) 2022 Peter Johanson
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+#include <nordic/nrf52840_qiaa.dtsi>
+#include "wio_tracker_1110-pinctrl.dtsi"
+#include "seeed_wio_tracker_1110_connector.dtsi"
+
+/ {
+	chosen {
+		zephyr,console = &usb_cdc_acm_uart;
+		zephyr,shell-uart = &usb_cdc_acm_uart;
+		zephyr,uart-mcumgr = &usb_cdc_acm_uart;
+		zephyr,bt-mon-uart = &usb_cdc_acm_uart;
+		zephyr,bt-c2h-uart = &usb_cdc_acm_uart;
+		zephyr,sram = &sram0;
+		zephyr,flash = &flash0;
+		zephyr,code-partition = &code_partition;
+		zephyr,ieee802154 = &ieee802154;
+	};
+
+	leds {
+		compatible = "gpio-leds";
+		led0: led_0 {
+			gpios = <&gpio0 6 GPIO_ACTIVE_LOW>;
+			label = "Blue LED";
+		};
+	};
+
+	/* These aliases are provided for compatibility with samples */
+	aliases {
+		led0 = &led0;
+		bootloader-led0 = &led0;
+		mcuboot-led0 = &led0;
+		watchdog0 = &wdt0;
+		spi-flash0 = &p25q32h;
+	};
+};
+
+&adc {
+	status = "okay";
+};
+
+&uicr {
+	gpio-as-nreset;
+};
+
+&gpiote {
+	status = "okay";
+};
+
+&gpio0 {
+	status = "okay";
+};
+
+&gpio1 {
+	status = "okay";
+};
+
+&uart0 {
+	compatible = "nordic,nrf-uarte";
+	status = "okay";
+	current-speed = <115200>;
+	pinctrl-0 = <&uart0_default>;
+	pinctrl-1 = <&uart0_sleep>;
+	pinctrl-names = "default", "sleep";
+};
+
+&i2c0 {
+	compatible = "nordic,nrf-twi";
+	/* Cannot be used together with spi1. */
+	status = "okay";
+	pinctrl-0 = <&i2c0_default>;
+	pinctrl-1 = <&i2c0_sleep>;
+	pinctrl-names = "default", "sleep";
+};
+
+
+
+&spi2 {
+	compatible = "nordic,nrf-spi";
+	status = "okay";
+	pinctrl-0 = <&spi2_default>;
+	pinctrl-1 = <&spi2_sleep>;
+	pinctrl-names = "default", "sleep";
+};
+
+&qspi {
+	status = "okay";
+	pinctrl-0 = <&qspi_default>;
+	pinctrl-1 = <&qspi_sleep>;
+	pinctrl-names = "default", "sleep";
+	p25q32h: p25q32h@0 {
+		compatible = "nordic,qspi-nor";
+		reg = <0>;
+		sck-frequency = <104000000>;
+		quad-enable-requirements = "S2B1v1";
+		jedec-id = [85 60 16];
+		sfdp-bfp = [
+			e5 20 f1 ff  ff ff ff 01  44 eb 08 6b  08 3b 80 bb
+			ee ff ff ff  ff ff 00 ff  ff ff 00 ff  0c 20 0f 52
+			10 d8 08 81
+		];
+		size = <33554432>;
+		has-dpd;
+		t-enter-dpd = <3000>;
+		t-exit-dpd = <8000>;
+	};
+};
+
+&ieee802154 {
+	status = "okay";
+};
+
+&flash0 {
+	partitions {
+		compatible = "fixed-partitions";
+		#address-cells = <1>;
+		#size-cells = <1>;
+
+		sd_partition: partition@0 {
+			label = "softdevice";
+			reg = <0x00000000 0x00026000>;
+		};
+
+		code_partition: partition@26000 {
+			label = "code_partition";
+			reg = <0x00026000 0x000c2000>;
+		};
+
+		factory_partition: partition@e8000 {
+			label = "factory_partition";
+			reg = <0x000e8000 0x00001000>;
+		};
+		lbm_partition: partition@e9000 {
+			label = "lbm_partition";
+			reg = <0x000e9000 0x00004000>;
+		};
+		/*
+		 * The flash starting at 0x000ed000 and ending at
+		 * 0x000f3fff is reserved for use by the application.
+		 *
+		 * Storage partition will be used by FCB/LittleFS/NVS
+		 * if enabled.
+		 */
+		storage_partition: partition@ed000 {
+			label = "storage";
+			reg = <0x000ed000 0x00007000>;
+		};
+
+		boot_partition: partition@f4000 {
+			label = "adafruit_boot";
+			reg = <0x000f4000 0x0000c000>;
+		};
+	};
+};
+
+zephyr_udc0: &usbd {
+	compatible = "nordic,nrf-usbd";
+	status = "okay";
+
+	usb_cdc_acm_uart: cdc-acm-uart {
+		compatible = "zephyr,cdc-acm-uart";
+	};
+};

@@ -1,0 +1,69 @@
+/*
+ * Copyright (c) 2022 Peter Johanson
+ * Copyright (c) 2022 Marcin Niestroj
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+/ {
+	WM1110_d: connector {
+		compatible = "seeed,wm1110-gpio";
+		#gpio-cells = <2>;
+		gpio-map-mask = <0xffffffff 0xffffffc0>;
+		gpio-map-pass-thru = <0 0x3f>;
+		gpio-map
+			= <0 0 &gpio0 0 0>		/* XL1 */
+			, <1 0 &gpio0 1 0>		/* XL2 */
+			, <2 0 &gpio0 2 0>		/* AIN0 */
+			, <3 0 &gpio0 3 0>		/* AIN1 */
+			, <4 0 &gpio0 4 0>		/* AIN2 */
+			, <5 0 &gpio0 5 0>		/* AIN3 */
+			, <6 0 &gpio0 6 0>		/*  */
+			, <7 0 &gpio0 7 0>		/* TRACECLK */
+			, <8 0 &gpio0 8 0>		/*  */
+			, <9 0 &gpio0 9 0>		/* NFC1 */
+			, <10 0 &gpio0 10 0>	/* NFC2 */
+			, <11 0 &gpio0 11 0>	/* TRACEDATA2 */
+			, <12 0 &gpio0 12 0>	/* TRACEDATA1 */
+			, <13 0 &gpio0 13 0>	/*  */
+			, <14 0 &gpio0 14 0>	/*  */
+			, <15 0 &gpio0 15 0>	/*  */
+			, <16 0 &gpio0 16 0>	/*  */
+			, <17 0 &gpio0 17 0>	/*  */
+			, <18 0 &gpio0 18 0>	/* nRST */
+			, <19 0 &gpio0 19 0>	/*  */
+			, <20 0 &gpio0 20 0>	/*  */
+			, <21 0 &gpio0 21 0>	/*  */
+			, <22 0 &gpio0 22 0>	/*  */
+			, <23 0 &gpio0 23 0>	/*  */
+			, <24 0 &gpio0 24 0>	/*  */
+			, <25 0 &gpio0 25 0>	/*  */
+			, <26 0 &gpio0 26 0>	/*  */
+			, <27 0 &gpio0 27 0>	/*  */
+			, <28 0 &gpio0 28 0>	/* AIN4 */
+			, <29 0 &gpio0 29 0>	/* AIN5 */
+			, <30 0 &gpio0 30 0>	/* AIN6 */
+			, <31 0 &gpio0 31 0>	/* AIN7 */
+			, <32 0 &gpio1 0 0>		/* TRACEDATA0/SWO */
+			, <33 0 &gpio1 1 0>		/*  */
+			, <34 0 &gpio1 2 0>		/*  */
+			, <35 0 &gpio1 3 0>		/*  */
+			, <36 0 &gpio1 4 0>		/*  */
+			, <37 0 &gpio1 5 0>		/*  */
+			, <38 0 &gpio1 6 0>		/*  */
+			, <39 0 &gpio1 7 0>		/*  */
+			, <40 0 &gpio1 8 0>		/*  */
+			, <41 0 &gpio1 9 0>		/* TRACEDATA3 */
+			, <42 0 &gpio1 10 0>	/*  */
+			, <43 0 &gpio1 11 0>	/*  */
+			, <44 0 &gpio1 12 0>	/*  */
+			, <45 0 &gpio1 13 0>	/*  */
+			, <46 0 &gpio1 14 0>	/*  */
+			, <47 0 &gpio1 15 0>	/*  */
+			;
+	};
+};
+
+wm1110_spi: &spi2 {};
+wm1110_i2c: &i2c1 {};
+wm1110_serial: &uart0 {};

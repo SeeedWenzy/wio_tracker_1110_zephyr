@@ -1,0 +1,8 @@
+# Wio Tracker 1110 board configuration
+
+# Copyright (c) 2022 Marcin Niestroj
+# SPDX-License-Identifier: Apache-2.0
+
+config BOARD_WIO_TRACKER_1110
+	bool "wio tracker 1110"
+	depends on SOC_NRF52840_QIAA

@@ -1,0 +1,13 @@
+/*
+ * Copyright (c) 2022-2023 Marcin Niestroj
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+/dts-v1/;
+#include "wio_tracker_1110_common.dtsi"
+
+/ {
+	model = "Seeed WIO TRACKER 1110 ";
+	compatible = "seeed,wio-tracker-1110";
+};
